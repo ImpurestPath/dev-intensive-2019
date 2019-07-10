@@ -7,7 +7,7 @@ fun String.truncate(lenght: Int = 16): String {
         return trimString
     }
 
-    if (trimString.length <= lenght) {
+    if (lenght >= trimString.length) {
         return trimString
     }
 
