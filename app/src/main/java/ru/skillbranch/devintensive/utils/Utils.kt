@@ -19,16 +19,13 @@ object Utils {
     }
 
     fun toInitials(firstName: String?, lastName: String?): String? {
-        val first = firstName?.getOrNull(0)
-        val second = lastName?.getOrNull(0)
-        var total = "null"
-        if (first != null) {
-            total = "$first".toUpperCase()
-            if (second != null) total = "$total$second".toUpperCase()
-        } else {
-            if (second != null) total = "$second".toUpperCase()
-        }
-        return total;
+        var output: String?
+        if ((firstName?.replace(" ", "") == "" && lastName?.replace(" ", "") == "") ||
+            (firstName == null && lastName == null))
+            return null
+        else
+            return "${firstName?.replace(" ", "")?.getOrNull(0) ?: ""}${lastName?.replace(" ", "")?.getOrNull(0)
+                ?: ""}".toUpperCase()
     }
 
     fun transliteration(payload: String, divider: String = " "): String {
