@@ -14,11 +14,11 @@ data class User (
     var isOnline : Boolean = false
 ){
     companion object Factory {
-        private var lastId:Int = -1;
+        private var lastId:Int = -1
         fun makeUser(fullName:String?) : User{
-            lastId++;
-            val (firstName,lastName) = Utils.parseFullName(fullName);
-            return User("$lastId",firstName,lastName,null);
+            lastId++
+            val (firstName,lastName) = Utils.parseFullName(fullName)
+            return User("$lastId",firstName,lastName,null)
         }
     }
     data class Builder(
