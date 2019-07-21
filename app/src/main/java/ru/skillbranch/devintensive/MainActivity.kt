@@ -4,14 +4,19 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.models.Bender
+import android.view.inputmethod.EditorInfo
+import android.widget.Toast
+import ru.skillbranch.devintensive.extensions.hideKeyboard
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+
+class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEditorActionListener {
 
 
     lateinit var benderImage: ImageView
@@ -42,15 +47,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         textTxt.text = benderObj.askQuestion()
         messageEt.setText(message)
     }
-
+    fun checkAnswer(){
+        val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+        messageEt.setText("")
+        val (r, g, b) = color
+        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+        textTxt.text = phrase
+    }
     override fun onClick(p0: View?) {
         if (p0?.id == R.id.iv_send) {
-            val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
-            messageEt.setText("")
-            val (r, g, b) = color
-            benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-            textTxt.text = phrase
-
+            checkAnswer()
         }
     }
 
@@ -59,5 +65,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         outState.putString("STATUS", benderObj.status.name)
         outState.putString("QUESTION", benderObj.question.name)
         outState.putString("MESSAGE", messageEt.text.toString())
+    }
+    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
+        return if (actionId == EditorInfo.IME_ACTION_DONE) {
+            checkAnswer()
+            hideKeyboard()
+            true
+        } else false
     }
 }
