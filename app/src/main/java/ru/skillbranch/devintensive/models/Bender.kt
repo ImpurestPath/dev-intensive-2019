@@ -8,7 +8,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         return if (!question.validate(answer).first) {
             "${question.validate(answer).second}\n${question.question}" to status.color
         } else {
-            if (question.answers.contains(answer)) {
+            if (question.answers.contains(answer.toLowerCase())) {
                 question = question.nextQuestion()
                 "Отлично - ты справился\n${question.question}" to status.color
             } else {
